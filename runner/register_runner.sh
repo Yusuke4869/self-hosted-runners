@@ -14,6 +14,7 @@ HTTP_CODE="${RESPONSE: -3}"
 if [ "$HTTP_CODE" != 201 ]; then
   echo "Error: Failed to get registration token from GitHub API (HTTP $HTTP_CODE)"
   cat /tmp/registration_token.json
+  rm -f /tmp/registration_token.json
   exit 1
 fi
 
@@ -22,8 +23,11 @@ REGISTRATION_TOKEN=$(jq -r .token < /tmp/registration_token.json)
 if [ -z "$REGISTRATION_TOKEN" ] || [ "$REGISTRATION_TOKEN" == "null" ]; then
   echo "Error: Registration token is empty or invalid"
   cat /tmp/registration_token.json
+  rm -f /tmp/registration_token.json
   exit 1
 fi
+
+rm -f /tmp/registration_token.json
 
 ./config.sh \
   --url "https://github.com/${OWNER}/${REPO}" \
