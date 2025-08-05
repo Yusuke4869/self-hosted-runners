@@ -8,18 +8,17 @@ RUN apt-get update \
   && rm -rf /var/lib/apt/lists/*
 
 RUN useradd -m user \
-  && echo "user ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+  && echo "user ALL=(ALL) NOPASSWD: /home/user/actions-runner/bin/installdependencies.sh,/bin/chmod" >> /etc/sudoers.d/user \
+  && chmod 440 /etc/sudoers.d/user
 USER user
 
 ARG RUNNER_VERSION
-RUN <<EOF
-  cd /home/user
-  mkdir actions-runner && cd actions-runner
-  curl -o ./actions-runner-linux-x64-${RUNNER_VERSION}.tar.gz -L https://github.com/actions/runner/releases/download/v${RUNNER_VERSION}/actions-runner-linux-x64-${RUNNER_VERSION}.tar.gz
-  tar xzf ./actions-runner-linux-x64-${RUNNER_VERSION}.tar.gz
-  rm ./actions-runner-linux-x64-${RUNNER_VERSION}.tar.gz
-  sudo ./bin/installdependencies.sh
-EOF
+RUN cd /home/user \
+  && mkdir actions-runner && cd actions-runner \
+  && curl -o ./actions-runner-linux-x64-${RUNNER_VERSION}.tar.gz -L https://github.com/actions/runner/releases/download/v${RUNNER_VERSION}/actions-runner-linux-x64-${RUNNER_VERSION}.tar.gz \
+  && tar xzf ./actions-runner-linux-x64-${RUNNER_VERSION}.tar.gz \
+  && rm ./actions-runner-linux-x64-${RUNNER_VERSION}.tar.gz \
+  && sudo ./bin/installdependencies.sh
 
 COPY ./register_runner.sh /home/user/register_runner.sh
 RUN sudo chmod +x /home/user/register_runner.sh
