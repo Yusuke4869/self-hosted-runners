@@ -8,7 +8,7 @@ RUN apt-get update \
   && rm -rf /var/lib/apt/lists/*
 
 RUN useradd -m user \
-  && echo "user ALL=(ALL) NOPASSWD: /home/user/actions-runner/bin/installdependencies.sh,/bin/chmod" >> /etc/sudoers.d/user \
+  && echo "user ALL=(ALL) NOPASSWD: /home/user/actions-runner/bin/installdependencies.sh,/bin/chmod +x /home/user/register_runner.sh" >> /etc/sudoers.d/user \
   && chmod 440 /etc/sudoers.d/user
 USER user
 
