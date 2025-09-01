@@ -1,10 +1,15 @@
 {
   "tasks": {
-    "dev": "deno run --watch --allow-net src/main.ts"
+    "dev": "deno run --watch --allow-net src/main.ts",
+    "fmt": "deno lint --fix && deno fmt",
+    "lint": "deno check && deno lint && deno fmt --check"
   },
   "imports": {
     "@hono/zod-validator": "npm:@hono/zod-validator@^0.7.2",
     "hono": "npm:hono@^4.8.12",
     "zod": "npm:zod@^4.0.14"
+  },
+  "fmt": {
+    "exclude": ["**/*.md"]
   }
 }
