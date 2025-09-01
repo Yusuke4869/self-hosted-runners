@@ -1,6 +1,6 @@
 {
   "tasks": {
-    "dev": "deno run --watch main.ts"
+    "dev": "deno run --watch --allow-net src/main.ts"
   },
   "imports": {
     "@hono/zod-validator": "npm:@hono/zod-validator@^0.7.2",
