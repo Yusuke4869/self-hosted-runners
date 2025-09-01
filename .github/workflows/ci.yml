@@ -1,0 +1,24 @@
+name: ci
+on: [push, pull_request]
+
+jobs:
+  ci:
+    name: ci
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Set up Deno environment
+        uses: denoland/setup-deno@v2
+        with:
+          deno-version: latest
+
+      - name: Check format
+        run: deno fmt --check
+
+      - name: Check lint
+        run: deno lint
+
+      - name: Check types
+        run: deno check
