@@ -10,6 +10,9 @@ const getDefaultThreshold = (): ResourceThreshold => ({
   memory: parseFloat(Deno.env.get("RESOURCE_MEMORY_THRESHOLD") ?? "75"),
 });
 
+const getResourceUsage = async () =>
+  await Promise.all([getCpuUsage(), getMemoryUsage()]);
+
 const isResourceAvailable = (
   cpuUsage: number | null,
   memoryUsage: number | null,
@@ -21,14 +24,14 @@ const isResourceAvailable = (
 };
 
 export const getResourceAvailability = async (): Promise<boolean> => {
-  const [cpu, memory] = await Promise.all([getCpuUsage(), getMemoryUsage()]);
+  const [cpu, memory] = await getResourceUsage();
   const threshold = getDefaultThreshold();
 
   return isResourceAvailable(cpu, memory, threshold);
 };
 
 export const checkResourceAvailability = async (): Promise<ResourceStatus> => {
-  const [cpu, memory] = await Promise.all([getCpuUsage(), getMemoryUsage()]);
+  const [cpu, memory] = await getResourceUsage();
   const threshold = getDefaultThreshold();
   const available = isResourceAvailable(cpu, memory, threshold);
 
