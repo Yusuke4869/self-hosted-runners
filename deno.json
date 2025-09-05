@@ -1,6 +1,9 @@
 {
   "tasks": {
-    "dev": "deno run --watch --allow-net src/main.ts",
+    "start": "deno run --env --allow-net --allow-env --allow-run src/main.ts",
+    "start:worker": "deno run --env --allow-net --allow-env --allow-run src/worker/main.ts",
+    "dev": "deno run --watch --env --allow-net --allow-env --allow-run  src/main.ts",
+    "dev:worker": "deno run --watch --env --allow-net --allow-env --allow-run  src/worker/main.ts",
     "fmt": "deno lint --fix && deno fmt",
     "lint": "deno check && deno lint && deno fmt --check"
   },
