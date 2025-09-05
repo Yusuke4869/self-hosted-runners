@@ -1,0 +1,17 @@
+services:
+  worker-dev:
+    platform: linux/x86_64
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+      - /var/run/docker.sock:/var/run/docker.sock
+    working_dir: /app
+    restart: unless-stopped
+    command: deno task dev:worker
+    environment:
+      - RESOURCE_CPU_THRESHOLD=${RESOURCE_CPU_THRESHOLD:-90}
+      - RESOURCE_MEMORY_THRESHOLD=${RESOURCE_MEMORY_THRESHOLD:-90}
