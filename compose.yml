@@ -7,8 +7,14 @@ services:
     ports:
       - "8000:8000"
     volumes:
+      - kv-data:/app/data
       - /var/run/docker.sock:/var/run/docker.sock
     restart: always
     environment:
+      - KV_PATH=/app/data/kv.sqlite3
+      - GITHUB_WEBHOOK_SECRET=${GITHUB_WEBHOOK_SECRET:?required}
       - RESOURCE_CPU_THRESHOLD=${RESOURCE_CPU_THRESHOLD:-75}
       - RESOURCE_MEMORY_THRESHOLD=${RESOURCE_MEMORY_THRESHOLD:-75}
+
+volumes:
+  kv-data:
