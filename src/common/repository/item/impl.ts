@@ -15,7 +15,8 @@ export class JobRepository implements JobRepositoryInterface {
       }
 
       return jobs;
-    } catch {
+    } catch (e) {
+      console.error(e);
       throw new Error("Failed to find all jobs");
     }
   }
@@ -24,7 +25,8 @@ export class JobRepository implements JobRepositoryInterface {
     try {
       const r = await this.kv.get<Job>(["jobs", id]);
       return r.value ? new Job({ ...r.value }) : null;
-    } catch {
+    } catch (e) {
+      console.error(e);
       throw new Error("Failed to find job");
     }
   }
@@ -36,7 +38,8 @@ export class JobRepository implements JobRepositoryInterface {
       const res = await this.findJob(fields.id);
       if (!res) throw new Error("Failed to upsert job");
       return res;
-    } catch {
+    } catch (e) {
+      console.error(e);
       throw new Error("Failed to upsert job");
     }
   }
@@ -45,7 +48,8 @@ export class JobRepository implements JobRepositoryInterface {
     try {
       const res = await this.upsertJob({ ...job, ...fields });
       return res;
-    } catch {
+    } catch (e) {
+      console.error(e);
       throw new Error("Failed to update job");
     }
   }
@@ -53,7 +57,8 @@ export class JobRepository implements JobRepositoryInterface {
   async deleteJob(id: number): Promise<void> {
     try {
       await this.kv.delete(["jobs", id]);
-    } catch {
+    } catch (e) {
+      console.error(e);
       throw new Error("Failed to delete job");
     }
   }
