@@ -15,7 +15,10 @@ FROM denoland/deno:ubuntu
 WORKDIR /app
 COPY --from=builder /app .
 
-RUN chown -R deno:deno /app
+RUN mkdir -p /app/data && \
+    chown -R deno:deno /app && \
+    chmod 755 /app/data
+
 USER deno
 
 CMD ["deno", "task", "start:worker"]
