@@ -21,14 +21,18 @@ export const githubWebhookController = async (c: Context) => {
       return c.json({ message: "Skipped waiting action" }, 200);
     }
 
-    const { id: jobId, labels } = workflow_job;
+    const { id: jobId, run_id: runId, labels } = workflow_job;
+    const { name: repo, owner: { login: owner } } = repository;
+
+    const now = new Date().toLocaleString("ja-JP", { timeZone: "Asia/Tokyo" });
+    console.log(
+      `[${now}] Received workflow_job event: ${owner}/${repo} run#${runId} job#${jobId} (${action})`,
+    );
 
     if (action !== "queued") {
       await jobUseCase.dequeueJob(jobId);
       return c.json({ message: `Dequeued job ${jobId}` }, 200);
     }
-
-    const { name: repo, owner: { login: owner } } = repository;
 
     await jobUseCase.enqueueJob({ id: jobId, repo, owner, labels });
     return c.json({ message: `Enqueued job ${jobId}` }, 200);
