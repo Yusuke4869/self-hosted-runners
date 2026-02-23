@@ -6,17 +6,18 @@ export class Job {
   public runnerStarted: boolean;
 
   constructor(
-    { id, owner, repo, labels }: {
+    { id, owner, repo, labels, runnerStarted }: {
       id: number;
       owner: string;
       repo: string;
       labels: string[];
+      runnerStarted?: boolean;
     },
   ) {
     this.id = id;
     this.owner = owner;
     this.repo = repo;
     this.labels = labels;
-    this.runnerStarted = false;
+    this.runnerStarted = runnerStarted ?? false;
   }
 }
