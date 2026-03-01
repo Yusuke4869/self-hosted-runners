@@ -33,6 +33,7 @@ rm -f /tmp/registration_token.json
   --url "https://github.com/${OWNER}/${REPO}" \
   --token "${REGISTRATION_TOKEN}" \
   --ephemeral \
+  --disableupdate \
   --unattended
 
 ./run.sh
