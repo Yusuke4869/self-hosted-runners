@@ -1,5 +1,6 @@
 services:
   worker-dev:
+    user: root
     platform: linux/x86_64
     build:
       context: .
@@ -13,5 +14,10 @@ services:
     restart: unless-stopped
     command: deno task dev:worker
     environment:
+      - KV_PATH=${KV_PATH:-/app/data/worker/dev.sqlite3}
+      - GITHUB_WEBHOOK_SECRET=${GITHUB_WEBHOOK_SECRET:?required}
+      - GITHUB_PERSONAL_ACCESS_TOKEN=${GITHUB_PERSONAL_ACCESS_TOKEN:?required}
+      - JOB_POLL_INTERVAL_MS=${JOB_POLL_INTERVAL_MS:-5000}
+      - JOB_ASSIGN_LEASE_MS=${JOB_ASSIGN_LEASE_MS:-900000}
       - RESOURCE_CPU_THRESHOLD=${RESOURCE_CPU_THRESHOLD:-90}
       - RESOURCE_MEMORY_THRESHOLD=${RESOURCE_MEMORY_THRESHOLD:-90}

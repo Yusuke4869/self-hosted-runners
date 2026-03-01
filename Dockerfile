@@ -15,6 +15,16 @@ FROM denoland/deno:ubuntu
 WORKDIR /app
 COPY --from=builder /app .
 
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    ca-certificates \
+    docker.io \
+    bash \
+    curl \
+    jq && \
+    update-ca-certificates && \
+    rm -rf /var/lib/apt/lists/*
+
 RUN mkdir -p /app/data && \
     chown -R deno:deno /app && \
     chmod 755 /app/data
