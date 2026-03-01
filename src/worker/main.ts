@@ -3,6 +3,7 @@ import { logger } from "hono/logger";
 
 import { jobRouter } from "./route/job.ts";
 import { resourceRouter } from "./route/resource.ts";
+import { startJobProcessor } from "./usecase/job.ts";
 
 export const worker = new Hono()
   .use(logger())
@@ -11,5 +12,6 @@ export const worker = new Hono()
   .route("/resources", resourceRouter);
 
 if (import.meta.main) {
+  startJobProcessor();
   Deno.serve(worker.fetch);
 }

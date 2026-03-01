@@ -1,3 +1,5 @@
+import { env } from "../env.ts";
+
 export class Kv {
   private static instance: Kv | null = null;
 
@@ -5,8 +7,7 @@ export class Kv {
 
   static async getInstance(): Promise<Kv> {
     if (this.instance === null) {
-      const KV_PATH = Deno.env.get("KV_PATH") || undefined;
-      const kv = await Deno.openKv(KV_PATH);
+      const kv = await Deno.openKv(env.KV_PATH);
       this.instance = new Kv(kv);
     }
 

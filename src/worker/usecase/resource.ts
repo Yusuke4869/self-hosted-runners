@@ -2,12 +2,13 @@ import type {
   ResourceStatus,
   ResourceThreshold,
 } from "../../common/type/resource.ts";
+import { env } from "../../common/env.ts";
 import { getCpuUsage } from "../service/cpu.ts";
 import { getMemoryUsage } from "../service/memory.ts";
 
 const getDefaultThreshold = (): ResourceThreshold => ({
-  cpu: parseFloat(Deno.env.get("RESOURCE_CPU_THRESHOLD") ?? "75"),
-  memory: parseFloat(Deno.env.get("RESOURCE_MEMORY_THRESHOLD") ?? "75"),
+  cpu: env.RESOURCE_CPU_THRESHOLD,
+  memory: env.RESOURCE_MEMORY_THRESHOLD,
 });
 
 const getResourceUsage = async () =>
