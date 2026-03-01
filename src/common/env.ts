@@ -49,6 +49,17 @@ const getNumberEnv = (key: string, options: NumberEnvOptions): number => {
 export const env = {
   KV_PATH: getStringEnv("KV_PATH"),
   GITHUB_WEBHOOK_SECRET: getRequiredStringEnv("GITHUB_WEBHOOK_SECRET"),
+  GITHUB_PERSONAL_ACCESS_TOKEN: getRequiredStringEnv(
+    "GITHUB_PERSONAL_ACCESS_TOKEN",
+  ),
+  JOB_POLL_INTERVAL_MS: getNumberEnv("JOB_POLL_INTERVAL_MS", {
+    defaultValue: 5000,
+    min: 1000,
+  }),
+  JOB_ASSIGN_LEASE_MS: getNumberEnv("JOB_ASSIGN_LEASE_MS", {
+    defaultValue: 900000,
+    min: 1000,
+  }),
   RESOURCE_CPU_THRESHOLD: getNumberEnv("RESOURCE_CPU_THRESHOLD", {
     defaultValue: 75,
     min: 0,

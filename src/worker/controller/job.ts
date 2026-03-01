@@ -29,13 +29,24 @@ export const githubWebhookController = async (c: Context) => {
       `[${now}] Received workflow_job event: ${owner}/${repo} run#${runId} job#${jobId} (${action})`,
     );
 
-    if (action !== "queued") {
-      await jobUseCase.dequeueJob(jobId);
-      return c.json({ message: `Dequeued job ${jobId}` }, 200);
+    const payload = { id: jobId, runId, repo, owner, labels };
+
+    if (action === "queued") {
+      await jobUseCase.enqueueJob(payload);
+      return c.json({ message: `Enqueued job ${jobId}` }, 200);
     }
 
-    await jobUseCase.enqueueJob({ id: jobId, repo, owner, labels });
-    return c.json({ message: `Enqueued job ${jobId}` }, 200);
+    if (action === "in_progress") {
+      await jobUseCase.markJobRunning(payload);
+      return c.json({ message: `Marked running job ${jobId}` }, 200);
+    }
+
+    if (action === "completed") {
+      await jobUseCase.completeJob(jobId);
+      return c.json({ message: `Completed job ${jobId}` }, 200);
+    }
+
+    return c.json({ message: `Ignored action ${action}` }, 200);
   } catch (error) {
     console.error(error);
     return c.json({ message: "Internal Server Error" }, 500);
